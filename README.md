@@ -1,7 +1,7 @@
 # Boolean Rule Language
 
 ## Project Overview
-This repository contains a Domain-Specific Language (DSL) for expressing boolean logic and comparison operations. The Boolean Rule Language allows users to define rules and conditions in a clear and expressive manner, making it suitable for various applications such as decision-making systems, data validation, and configuration management.
+This repository contains a Domain-Specific Language (DSL) for expressing boolean logic and comparison operations. The Boolean Rule Language allows users to define rules and conditions in a clear and expressive way using Java.
 
 ## Features
 - **Expressive Syntax**: Supports a wide range of boolean expressions and comparison operators.
@@ -20,28 +20,42 @@ To install the Boolean Rule Language package, follow these steps:
    ```bash
    cd boolean-rule-language
    ```
-3. Install the dependencies:
+3. Build the project using Maven:
    ```bash
-   npm install
+   mvn clean install
    ```
 
 ## Quick Start
 
 ### Basic Usage
-```javascript
-const { parse } = require('boolean-rule-language');
+```java
+import com.booleanrule.BooleanRuleParser;
 
-const rule = "A AND B OR NOT C";
-const parsedRule = parse(rule);
-console.log(parsedRule);
+public class Main {
+    public static void main(String[] args) {
+        BooleanRuleParser parser = new BooleanRuleParser();
+        
+        String rule = "A AND B OR NOT C";
+        Object parsedRule = parser.parse(rule);
+        System.out.println(parsedRule);
+    }
+}
 ```
 
 ### Advanced Usage
 You can also define comparison expressions:
-```javascript
-const rule = "score >= 80 AND (status == 'active' OR NOT isAdmin)";
-const parsedRule = parse(rule);
-console.log(parsedRule);
+```java
+import com.booleanrule.BooleanRuleParser;
+
+public class Advanced {
+    public static void main(String[] args) {
+        BooleanRuleParser parser = new BooleanRuleParser();
+        
+        String rule = "score >= 80 AND (status == 'active' OR NOT isAdmin)";
+        Object parsedRule = parser.parse(rule);
+        System.out.println(parsedRule);
+    }
+}
 ```
 
 ## Language Syntax
@@ -99,72 +113,72 @@ Input String → Lexer → Tokens → Parser → AST → Evaluator → Result
 ## Use Cases
 
 1. **User Permissions**: Define complex permission rules based on user roles and attributes
-   ```javascript
-   "isAdmin OR (isEditor AND hasApproval)"
+   ```java
+   String rule = "isAdmin OR (isEditor AND hasApproval)";
    ```
 
 2. **Product Filtering**: Filter products based on multiple criteria
-   ```javascript
-   "price <= 100 AND (category == 'electronics' OR category == 'software')"
+   ```java
+   String rule = "price <= 100 AND (category == 'electronics' OR category == 'software')";
    ```
 
 3. **Business Logic**: Encode business rules for decision-making
-   ```javascript
-   "creditScore >= 750 AND (yearsEmployed >= 2 OR hasCollateral)"
+   ```java
+   String rule = "creditScore >= 750 AND (yearsEmployed >= 2 OR hasCollateral)";
    ```
 
 ## API Reference
 
-### `parse(ruleString)`
+### `parse(String ruleString)`
 Parses a rule string and returns an Abstract Syntax Tree (AST).
 
 **Parameters:**
-- `ruleString` (string): The rule to parse
+- `ruleString` (String): The rule to parse
 
 **Returns:**
-- (object): An AST representing the parsed rule
+- (Object): An AST representing the parsed rule
 
 **Throws:**
-- (Error): If the rule contains syntax errors
+- (Exception): If the rule contains syntax errors
 
-### `evaluate(ast, variables)`
+### `evaluate(Object ast, Map<String, Object> variables)`
 Evaluates an AST against a set of variable values.
 
 **Parameters:**
-- `ast` (object): The Abstract Syntax Tree
-- `variables` (object): Key-value pairs of variable names and their values
+- `ast` (Object): The Abstract Syntax Tree
+- `variables` (Map<String, Object>): Key-value pairs of variable names and their values
 
 **Returns:**
 - (boolean): The result of evaluating the rule
 
 **Throws:**
-- (Error): If required variables are missing
+- (Exception): If required variables are missing
 
 ## Error Handling
 
 The language provides clear error messages for common issues:
 
-```javascript
+```java
 try {
-  parse("A AND AND B"); // Missing operand
-} catch (error) {
-  console.error(error.message); // "Unexpected token: AND"
+    parser.parse("A AND AND B"); // Missing operand
+} catch (Exception error) {
+    System.err.println(error.getMessage()); // "Unexpected token: AND"
 }
 
 try {
-  parse("A OR"); // Incomplete expression
-} catch (error) {
-  console.error(error.message); // "Unexpected end of input"
+    parser.parse("A OR"); // Incomplete expression
+} catch (Exception error) {
+    System.err.println(error.getMessage()); // "Unexpected end of input"
 }
 ```
 
 ## Performance Tips
 
 1. **Cache Parsed Rules**: Parse rules once and reuse the AST:
-   ```javascript
-   const ast = parse(rule);
-   const result1 = evaluate(ast, variables1);
-   const result2 = evaluate(ast, variables2);
+   ```java
+   Object ast = parser.parse(rule);
+   boolean result1 = evaluator.evaluate(ast, variables1);
+   boolean result2 = evaluator.evaluate(ast, variables2);
    ```
 
 2. **Precompile Rules**: For frequently used rules, consider precompiling them into optimized forms.
@@ -184,7 +198,3 @@ Contributions are welcome! Please follow these steps:
 ## License
 
 This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
-
-## Contact
-
-For questions or suggestions, please open an issue on the [GitHub repository](https://github.com/abdullahsherdy/boolean-rule-language).
